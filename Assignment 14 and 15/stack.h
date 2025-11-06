@@ -24,11 +24,11 @@ StackNode* init_StackNode(int value, StackNode* nextptr){
     return node;
 }
 
-void push(Stack *s, int value){
+void pushStack(Stack *s, int value){
     s->top = init_StackNode(value, s->top);
 }
 
-void pop(Stack* s){
+void popStack(Stack* s){
     if(s->top == NULL){
         return ;
     }
@@ -38,11 +38,11 @@ void pop(Stack* s){
     return ;
 }
 
-int top(Stack s) {
+int topStack(Stack s) {
     return s.top->data;
 }
 
-bool isEmpty(Stack s){
+bool isEmptyStack(Stack s){
     if(s.top == NULL)
         return true;
     return false;

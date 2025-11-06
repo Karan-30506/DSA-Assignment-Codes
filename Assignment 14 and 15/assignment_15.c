@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "queue.h"
+#include "stack.h"
 
 // The given code considers a 0-indexed undirected graph
 
@@ -260,7 +261,7 @@ void DFSofGraph(Graph g, int index, bool *visited) {
     }
 }
 
-void DFS(Graph g, int startValue) {
+void DFS_Recursive(Graph g, int startValue) {
     int startId = getValueIndex(g, startValue);
     if(startId == -1) {
         printf("Invalid Node\n");
@@ -268,6 +269,37 @@ void DFS(Graph g, int startValue) {
     }
     bool *visited = calloc(g.n, sizeof(bool));
     DFSofGraph(g, startId, visited);
+    printf("\n");
+}
+
+void DFS_usingStack(Graph g, int startValue) {
+    int startId = getValueIndex(g, startValue);
+    if(startId == -1) {
+        printf("Invalid Node\n");
+        return;
+    }
+    bool *visited = calloc(g.n, sizeof(bool));
+    Stack s = {NULL};
+
+    pushStack(&s, startId);
+
+    while(!isEmptyStack(s)) {
+        int vertex = topStack(s);
+        popStack(&s);
+
+        if(!visited[vertex]) {
+            visited[vertex] = true;
+            printf("%d ", g.vertexValues[vertex]);
+        }
+
+        Node* temp = g.adjList[vertex];
+        while(temp) {
+            if(!visited[temp->vertex]) {
+                pushStack(&s, temp->vertex);
+            }
+            temp = temp->next;
+        }
+    }
     printf("\n");
 }
 
@@ -367,7 +399,8 @@ int main() {
                 printf("\nEnter the Starting Index: ");
                 scanf("%d", &value);
                 printf("\nDepth First Search: ");
-                DFS(*g, value);
+                DFS_Recursive(*g, value);
+                DFS_usingStack(*g, value);
                 break;
             case 10:
                 printf("\nProgram Terminated...\n");
